@@ -6,7 +6,7 @@ node = [prev, key, val, next, num_bytes]
 @head -> prev -> prev -> @tail
 @head <- next <- next <- @tail
 
-B. A hash, @data, that returns a node when presented with a key
+B. A hash, @hash, that returns a node when presented with a key
 Once the node is known you can move the node to the head and also get the node's value
 
 2.  If the new item to be added to the cache overfills the cache, then the tail
