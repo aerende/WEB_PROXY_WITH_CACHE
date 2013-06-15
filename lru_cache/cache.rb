@@ -1,4 +1,7 @@
 
+module LruCache
+
+end
 
 class LruCache::Cache
 
@@ -8,14 +11,14 @@ class LruCache::Cache
   # @head -> prev -> prev -> @tail
   # @head <- next <- next <- @tail
   #
-  # 2. A hash, @data, that returns a node when presented with a key
+  # 2. A hash, @hash, that returns a node when presented with a key
   # Once the node is known you can move it to the head and also get the value
 
   MAX_CACHE_SIZE = 5242880   # 5 MBytes
 
   def initialize(max_size)  # max_size is number of entries not cache size in bytes
     @max_size = max_size
-    @data = {}
+    @hash = {}
     @head = nil
     @tail = nil
     @cache_size = 0
@@ -33,28 +36,8 @@ class LruCache::Cache
     end
   end
 
-# def getset(key)
-#   node = @data[key]
-#   if node
-#     move_to_head(node)
-#     node[2]
-#   else
-#    self[key] = yield
-#   end
-# end
-
-# def fetch(key)
-#   node = @data[key]
-#   if node
-#     move_to_head(node)
-#     node[2]
-#   else
-#    yield if block_given?
-#   end
-# end
-
   def [](key)
-    node = @data[key]
+    node = @hash[key]
     if node
       move_to_head(node)
       node[2]
@@ -64,19 +47,19 @@ class LruCache::Cache
   # not sure if this is needed since add_to_head needs num_bytes
 
   def []=(key,val)
-    node = @data[key]
+    node = @hash[key]
     if node
       move_to_head(node)
       node[2] = val
     else
-      @data[key] = add_to_head(key,val)
+      @hash[key] = add_to_head(key,val)
       pop_tail
     end
     val
   end
 
   def add_to_cache(key,val, num_bytes)
-    node = @data[key]
+    node = @hash[key]
 puts "add_to_cache 0 - @cache_size = #{@cache_size}, num_bytes = #{num_bytes}"
     if(@cache_size + num_bytes < MAX_CACHE_SIZE)
       @cache_size = @cache_size + num_bytes
@@ -85,7 +68,7 @@ puts "add_to_cache 0 - @cache_size = #{@cache_size}, num_bytes = #{num_bytes}"
         move_to_head(node)
         node[2] = val
       else
-        @data[key] = add_to_head(key, val, num_bytes)
+        @hash[key] = add_to_head(key, val, num_bytes)
         pop_tail
       end
       return 1
@@ -94,7 +77,7 @@ puts "add_to_cache 0 - @cache_size = #{@cache_size}, num_bytes = #{num_bytes}"
 puts "add_to_cache 2a"
       # remove tail
       @cache_size = @cache_size - @tail[4]
-      @data.delete(@tail[1])
+      @hash.delete(@tail[1])
       if (!@tail[3].nil?)
         @tail = @tail[3]
         @tail[0] = nil
@@ -127,7 +110,7 @@ puts "add_to_cache 2a"
   end
 
   def delete(k)
-    if node = @data.delete(k)
+    if node = @hash.delete(k)
       prev = node[0]
       nex = node[3]
 
@@ -137,12 +120,12 @@ puts "add_to_cache 2a"
   end
 
   def clear
-    @data.clear
+    @hash.clear
     @head = @tail = nil
   end
 
   def count
-    @data.count
+    @hash.count
   end
 
   # for cache validation only, ensures all is sound
@@ -151,10 +134,10 @@ puts "add_to_cache 2a"
 
     count = 0
     self.each_unsafe do |k,v|
-      return false if @data[k][2] != v
+      return false if @hash[k][2] != v
       count += 1
     end
-    count == @data.count
+    count == @hash.count
   end
 
 
@@ -179,9 +162,9 @@ puts "add_to_cache 2a"
 
 
   def pop_tail
-    if @data.length > @max_size
+    if @hash.length > @max_size
       removed_size = @tail[4]
-      @data.delete(@tail[1])
+      @hash.delete(@tail[1])
       @tail = @tail[3]
       @tail[0] = nil
       true
