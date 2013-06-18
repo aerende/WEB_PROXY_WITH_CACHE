@@ -44,19 +44,7 @@ class LruCache::Cache
     end
   end
 
-  # not sure if this is needed since add_to_head needs num_bytes
 
-  def []=(key,val)
-    node = @hash[key]
-    if node
-      move_to_head(node)
-      node[2] = val
-    else
-      @hash[key] = add_to_head(key,val)
-      pop_tail
-    end
-    val
-  end
 
   def add_to_cache(key,val, num_bytes)
     node = @hash[key]
@@ -98,16 +86,8 @@ puts "add_to_cache 2a"
   end
 
 
-  # used further up the chain, non thread safe each
   alias_method :each_unsafe, :each
 
-  def to_a
-    a = []
-    self.each_unsafe do |k,v|
-      a << [k,v]
-    end
-    a
-  end
 
   def delete(k)
     if node = @hash.delete(k)
@@ -118,29 +98,6 @@ puts "add_to_cache 2a"
       nex[0] = prev if nex
     end
   end
-
-  def clear
-    @hash.clear
-    @head = @tail = nil
-  end
-
-  def count
-    @hash.count
-  end
-
-  # for cache validation only, ensures all is sound
-  def valid?
-    expected = {}
-
-    count = 0
-    self.each_unsafe do |k,v|
-      return false if @hash[k][2] != v
-      count += 1
-    end
-    count == @hash.count
-  end
-
-
 
 
 
