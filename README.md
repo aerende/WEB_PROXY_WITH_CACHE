@@ -1,12 +1,11 @@
-This is a Web Proxy using sockets attached to an LRU cache all written in ruby with
-out using any libraries.
+This is a Web Proxy using sockets attached to an LRU cache all written in ruby without using any libraries.
 
-The LRUCache consists of two data structures:
+The LRU cache consists of two data structures:
 
 A. A doubly linked list of nodes.  The nodes are arrays:
 node = [prev, key, val, next, num_bytes]
 
-The doubly linked list is conneted as follows:
+The doubly linked list is connected as follows:
 
 @head -> prev -> prev -> @tail
 
