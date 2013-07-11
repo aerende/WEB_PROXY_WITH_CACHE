@@ -7,7 +7,9 @@ A. A doubly linked list of nodes.  The nodes are arrays:
 node = [prev, key, val, next, num_bytes]
 
 The doubly linked list is conneted as follows:
+
 @head -> prev -> prev -> @tail
+
 @head <- next <- next <- @tail
 
 B. A hash, @hash, that returns a node when presented with a key.
