@@ -25,8 +25,11 @@ entry is too big for the cache then the new entry isn't added to the cache.
 3.  Click on Safari Preferences->Advanced->Proxies-Change Settings
 
 4.  Select "Web Proxy" and enter
+
     Web Proxy Server = localhost
+
     Port = 8008
+
     Click OK
 
 5.  On the Network Page for Ethernet 1 click Apply
