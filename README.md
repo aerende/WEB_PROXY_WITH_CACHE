@@ -1,8 +1,12 @@
+This is a Web Proxy using sockets attached to an LRU cache all written in ruby with
+out using any libraries.
 
 The LRUCache consists of two data structures:
 
 A. A doubly linked list of nodes.  The nodes are arrays:
 node = [prev, key, val, next, num_bytes]
+
+The doubly linked list is conneted as follows:
 @head -> prev -> prev -> @tail
 @head <- next <- next <- @tail
 
