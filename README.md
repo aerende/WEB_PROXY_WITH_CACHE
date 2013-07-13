@@ -1,4 +1,4 @@
-This is a Web Proxy using sockets attached to an LRU cache all written in ruby without using any libraries.
+This is a multi-threaded Web Proxy using sockets attached to a LRU cache all written in ruby without using any libraries.
 
 The LRU cache consists of two data structures:
 
